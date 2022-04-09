@@ -7,7 +7,6 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
@@ -28,7 +27,7 @@
         </rowConstraints>
          <children>
             <Button fx:id="undo_button" mnemonicParsing="false" onAction="#undoOnClick" prefHeight="25.0" prefWidth="45.0" text="undo" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <Button fx:id="clear_button" mnemonicParsing="false" onAction="#clearOnClick" text="clear" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+            <Button fx:id="clear_button" mnemonicParsing="false" onAction="#clearOnClick" text="clearrr" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
             <ColorPicker fx:id="color_picker" promptText="select color" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
             <ComboBox fx:id="shape_selector" prefHeight="25.0" prefWidth="144.0" promptText="select shape" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
             <ToggleButton fx:id="shape_fill_select" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Filled" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
@@ -37,7 +36,6 @@
             <Label text="select filled" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
          </children>
       </GridPane>
-      <Pane fx:id="paint_pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: blue;" />
-      <HBox fx:id="my_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#paintPaneOnMouseClicked" onMouseDragged="#paintPaneOnMouseDragged" onMousePressed="#paintPaneOnMousePressed" onMouseReleased="#paintPaneOnMouseReleased" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: blue;" VBox.vgrow="ALWAYS" />
+      <Pane fx:id="paint_pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onDragDetected="#paintPaneOnDragDetected" onMouseClicked="#paintPaneOnMouseClicked" onMouseDragged="#paintPaneOnMouseDragged" onMousePressed="#paintPaneOnMousePressed" onMouseReleased="#paintPaneOnMouseReleased" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: white;" />
    </children>
 </VBox>
