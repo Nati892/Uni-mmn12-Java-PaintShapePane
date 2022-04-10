@@ -12,9 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 
 
 public class MyLayoutController {
@@ -24,7 +22,7 @@ public class MyLayoutController {
     private boolean filled = true;
     private boolean hasbeendragged = false;
     private MouseEvent startpos = null;
-    private int sizee = 40;
+
 
     @FXML
     private GridPane bottom_pane;
@@ -48,7 +46,7 @@ public class MyLayoutController {
     private ToggleButton shape_fill_select;
 
     @FXML
-    private ComboBox<Shape> shape_selector;
+    private ComboBox<String> shape_selector;
 
     @FXML
     private Button undo_button;
@@ -57,9 +55,11 @@ public class MyLayoutController {
     @FXML
     public void initialize() {
         shape_selector.getItems().addAll(
-
+    "Rectangle", "Circle", "line"
         );
 
+        shape_selector.setValue("Rectangle");
+        color_picker.setValue(Color.BLACK);
     }
 
     @FXML
@@ -126,40 +126,65 @@ public class MyLayoutController {
     }
 
     private void paintShape(MouseEvent endpos) {
+        Shape shape;
+        shape = determineShape(startpos, endpos);
+
+
+        if (shape_fill_select.isSelected()) {
+            shape.setFill(Color.TRANSPARENT);
+            shape.setStrokeWidth(1.0);
+            shape.setStroke(color_picker.getValue());
+
+        } else {
+            shape.setFill(color_picker.getValue());
+        }
+        paint_pane.getChildren().add(shape);
+    }
+
+    private Shape determineShape(MouseEvent start, MouseEvent end_pos) {
         int startx = 0, starty = 0;
-        int sizex = (int) (endpos.getSceneX() - startpos.getSceneX());
-        int sizey = (int) (endpos.getSceneY() - startpos.getSceneY());
+        int sizex = (int) (end_pos.getSceneX() - start.getSceneX());
+        int sizey = (int) (end_pos.getSceneY() - start.getSceneY());
 
-
+        //set x start pos
         if (sizex < 0) {
             System.out.println("x is negative");
             sizex *= -1;
-            startx = (int) endpos.getSceneX();
+            startx = (int) end_pos.getSceneX();
         } else {
-            startx = (int) startpos.getSceneX();
+            startx = (int) start.getSceneX();
             System.out.println("x is positive");
         }
 
-
+        //set y start pos
         if (sizey < 0) {
             sizey *= -1;
-            starty = (int) endpos.getSceneY();
+            starty = (int) end_pos.getSceneY();
             System.out.println("y is negative");
         } else {
-            starty = (int) startpos.getSceneY();
+            starty = (int) start.getSceneY();
             System.out.println("y is positive");
         }
         starty -= paint_pane.getLayoutY();
 
-        System.out.println("startx: " + startx + ". starty: " + starty + ". sizex: " + sizex + ". sizey: " + sizey);
-        Rectangle rect = new Rectangle(startx, starty, sizex, sizey);
-        System.out.println(sizee + "<------");
-        //rect =new Rectangle(sizee, sizee ,sizee, sizee);
-        sizee += 10;
+        Shape shape = null;
+        switch (shape_selector.getValue()) {
+            case "Rectangle":
+                shape = new Rectangle(startx, starty, sizex, sizey);
+                break;
 
-        rect.setFill(Color.DEEPPINK);
-        paint_pane.getChildren().add(rect);
+            case "Circle":
+                shape = new Circle(startx + Math.min(sizex, sizey) / 2, starty + Math.min(sizex, sizey) / 2, Math.min(sizex, sizey));
+                break;
 
+            case "line":
+                shape = new Line(start.getSceneX(), start.getSceneY()-paint_pane.getLayoutY(), end_pos.getSceneX(), end_pos.getSceneY()-paint_pane.getLayoutY());
+                break;
+
+
+
+        }
+        return shape;
 
     }
 
