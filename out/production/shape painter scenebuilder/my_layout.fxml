@@ -13,29 +13,29 @@
 
 
 <VBox fx:id="my_vbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyLayoutController">
-   <children>
-      <GridPane fx:id="bottom_pane" prefHeight="91.0" prefWidth="668.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints fillHeight="false" maxHeight="60.0" minHeight="55.0" prefHeight="0.0" valignment="TOP" vgrow="NEVER" />
-        </rowConstraints>
-         <children>
-            <Button fx:id="undo_button" mnemonicParsing="false" onAction="#undoOnClick" prefHeight="25.0" prefWidth="45.0" text="undo" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <Button fx:id="clear_button" mnemonicParsing="false" onAction="#clearOnClick" text="clearrr" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <ColorPicker fx:id="color_picker" promptText="select color" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <ComboBox fx:id="shape_selector" prefHeight="25.0" prefWidth="144.0" promptText="select shape" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <ToggleButton fx:id="shape_fill_select" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Filled" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <Label text="select color" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
-            <Label text="select shape" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
-            <Label text="select filled" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
-         </children>
-      </GridPane>
-      <Pane fx:id="paint_pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onDragDetected="#paintPaneOnDragDetected" onMouseClicked="#paintPaneOnMouseClicked" onMouseDragged="#paintPaneOnMouseDragged" onMousePressed="#paintPaneOnMousePressed" onMouseReleased="#paintPaneOnMouseReleased" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: white;" />
-   </children>
+    <children>
+        <GridPane fx:id="bottom_pane" prefHeight="91.0" prefWidth="668.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints fillHeight="false" maxHeight="60.0" minHeight="55.0" prefHeight="0.0" valignment="TOP" vgrow="NEVER" />
+            </rowConstraints>
+            <children>
+                <Button fx:id="undo_button" mnemonicParsing="false" onAction="#undoOnClick" prefHeight="25.0" prefWidth="45.0" text="undo" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <Button fx:id="clear_button" mnemonicParsing="false" onAction="#clearOnClick" text="Clear all" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <ColorPicker fx:id="color_picker" promptText="select color" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <ComboBox fx:id="shape_selector" prefHeight="25.0" prefWidth="144.0" promptText="select shape" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <ToggleButton fx:id="shape_fill_select" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Filled" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <Label text="select color" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
+                <Label text="select shape" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
+                <Label text="select filled" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
+            </children>
+        </GridPane>
+        <Pane fx:id="paint_pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onDragDetected="#paintPaneOnDragDetected" onMouseClicked="#paintPaneOnMouseClicked" onMouseDragged="#paintPaneOnMouseDragged" onMousePressed="#paintPaneOnMousePressed" onMouseReleased="#paintPaneOnMouseReleased" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: white;" />
+    </children>
 </VBox>

@@ -24,7 +24,7 @@ public class MyLayoutController {
     private boolean filled = true;
     private boolean hasbeendragged = false;
     private MouseEvent startpos = null;
-
+    private int sizee = 40;
 
     @FXML
     private GridPane bottom_pane;
@@ -127,29 +127,35 @@ public class MyLayoutController {
 
     private void paintShape(MouseEvent endpos) {
         int startx = 0, starty = 0;
-        int sizex = (int) (endpos.getScreenX() - startpos.getScreenX());
-        int sizey = (int) (endpos.getScreenY() - startpos.getScreenY());
+        int sizex = (int) (endpos.getSceneX() - startpos.getSceneX());
+        int sizey = (int) (endpos.getSceneY() - startpos.getSceneY());
+
 
         if (sizex < 0) {
             System.out.println("x is negative");
             sizex *= -1;
-            startx = (int) startpos.getScreenX() - sizex;
+            startx = (int) endpos.getSceneX();
         } else {
-            startx = (int) startpos.getScreenX();
+            startx = (int) startpos.getSceneX();
             System.out.println("x is positive");
         }
 
+
         if (sizey < 0) {
             sizey *= -1;
-            starty = (int) startpos.getScreenY() - sizey;
+            starty = (int) endpos.getSceneY();
             System.out.println("y is negative");
         } else {
-            starty = (int) startpos.getScreenY();
+            starty = (int) startpos.getSceneY();
             System.out.println("y is positive");
         }
+        starty -= paint_pane.getLayoutY();
 
         System.out.println("startx: " + startx + ". starty: " + starty + ". sizex: " + sizex + ". sizey: " + sizey);
         Rectangle rect = new Rectangle(startx, starty, sizex, sizey);
+        System.out.println(sizee + "<------");
+        //rect =new Rectangle(sizee, sizee ,sizee, sizee);
+        sizee += 10;
 
         rect.setFill(Color.DEEPPINK);
         paint_pane.getChildren().add(rect);
