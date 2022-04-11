@@ -1,7 +1,5 @@
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -17,12 +15,10 @@ import javafx.scene.shape.*;
 
 public class MyLayoutController {
 
-    private GraphicsContext gc;
-
-    private boolean filled = true;
-    private boolean hasbeendragged = false;
-    private MouseEvent startpos = null;
-
+    //field indicating whether a drag has started
+    private boolean drag_started = false;
+    private Point mouse_start_pos = null;
+    private Point mouse_end_pos = null;
 
     @FXML
     private GridPane bottom_pane;
@@ -54,68 +50,34 @@ public class MyLayoutController {
 
     @FXML
     public void initialize() {
-        shape_selector.getItems().addAll(
-    "Rectangle", "Circle", "line"
-        );
-
-        shape_selector.setValue("Rectangle");
+        populateShapeSelector(shape_selector);
+        //init color picker with black
         color_picker.setValue(Color.BLACK);
     }
 
     @FXML
     void clearOnClick(ActionEvent event) {
+        //clear screen from all shapes
         paint_pane.getChildren().clear();
 
     }
 
-    @FXML
-    void paintPaneOnDragDetected(MouseEvent event) {
-        System.out.println("on drag");
 
-    }
-
-    @FXML
-    void paintPaneOnMouseClicked(MouseEvent event) {
-
-
-    }
-
-    @FXML
-    void paintPaneOnMouseDragged(MouseEvent event) {
-        System.out.println("on mouse dragged");
-        if (!hasbeendragged) {
-            hasbeendragged = true;
-
-        } else {
-
-
-        }
-
-    }
-
-    /*TODO remove event*/
     @FXML
     void paintPaneOnMousePressed(MouseEvent event) {
-        startpos = event;
+        mouse_start_pos = new Point(event);
 
     }
 
     @FXML
     void paintPaneOnMouseReleased(MouseEvent event) {
-        System.out.println("on mouse released");
-        int xpos;
-        int ypos;
+        mouse_end_pos = new Point(event);
+        normalize_end_point(mouse_end_pos);
 
-        if (hasbeendragged && startpos != null) {
-            hasbeendragged = !hasbeendragged;
-            paintShape(event);
+        if (mouse_end_pos.get_x_pos() != mouse_start_pos.get_x_pos() || mouse_end_pos.get_y_pos() != mouse_start_pos.get_y_pos()) {
+            drag_started = false;
+            paintShape();
         }
-        if (startpos != null) {
-            System.out.println("START event");
-            System.out.println(startpos.toString());
-        }
-        System.out.println("END event");
-        System.out.println(event.toString());
     }
 
     @FXML
@@ -125,11 +87,14 @@ public class MyLayoutController {
         }
     }
 
-    private void paintShape(MouseEvent endpos) {
+    /**
+     * determines the shapes parameters and draws it on the pane
+     */
+    private void paintShape() {
         Shape shape;
-        shape = determineShape(startpos, endpos);
+        shape = determineShape();//generate shape
 
-
+        //handled filled/hollow option for shape
         if (shape_fill_select.isSelected()) {
             shape.setFill(Color.TRANSPARENT);
             shape.setStrokeWidth(1.0);
@@ -137,56 +102,96 @@ public class MyLayoutController {
 
         } else {
             shape.setFill(color_picker.getValue());
+
         }
+        //paint the shape
         paint_pane.getChildren().add(shape);
     }
 
-    private Shape determineShape(MouseEvent start, MouseEvent end_pos) {
-        int startx = 0, starty = 0;
-        int sizex = (int) (end_pos.getSceneX() - start.getSceneX());
-        int sizey = (int) (end_pos.getSceneY() - start.getSceneY());
-
-        //set x start pos
-        if (sizex < 0) {
-            System.out.println("x is negative");
-            sizex *= -1;
-            startx = (int) end_pos.getSceneX();
-        } else {
-            startx = (int) start.getSceneX();
-            System.out.println("x is positive");
-        }
-
-        //set y start pos
-        if (sizey < 0) {
-            sizey *= -1;
-            starty = (int) end_pos.getSceneY();
-            System.out.println("y is negative");
-        } else {
-            starty = (int) start.getSceneY();
-            System.out.println("y is positive");
-        }
-        starty -= paint_pane.getLayoutY();
-
+    private Shape determineShape() {
         Shape shape = null;
+
         switch (shape_selector.getValue()) {
             case "Rectangle":
-                shape = new Rectangle(startx, starty, sizex, sizey);
+                shape = makeRect();
                 break;
 
             case "Circle":
-                shape = new Circle(startx + Math.min(sizex, sizey) / 2, starty + Math.min(sizex, sizey) / 2, Math.min(sizex, sizey));
+                shape = makeCircle();
                 break;
 
             case "line":
-                shape = new Line(start.getSceneX(), start.getSceneY()-paint_pane.getLayoutY(), end_pos.getSceneX(), end_pos.getSceneY()-paint_pane.getLayoutY());
+                shape = makeLine();
                 break;
-
-
-
         }
         return shape;
 
     }
 
 
+    private Rectangle makeRect() {
+        //determine positions
+        int startx = 0, starty = 0;
+        int sizex = (int) (mouse_end_pos.get_x_pos() - mouse_start_pos.get_x_pos());
+        int sizey = (int) (mouse_end_pos.get_y_pos() - mouse_start_pos.get_y_pos());
+
+        //set x start pos
+        if (sizex < 0) {
+
+            sizex *= -1;
+            startx = (int) mouse_end_pos.get_x_pos();
+        } else {
+            startx = (int) mouse_start_pos.get_x_pos();
+
+        }
+
+        //set y start pos
+        if (sizey < 0) {
+            sizey *= -1;
+            starty = (int) mouse_end_pos.get_y_pos();
+        } else {
+            starty = (int) mouse_start_pos.get_y_pos();
+        }
+        starty -= paint_pane.getLayoutY();
+        return new Rectangle(startx, starty, sizex, sizey);
+    }
+
+
+    private Line makeLine() {
+        return new Line(mouse_start_pos.get_x_pos(), mouse_start_pos.get_y_pos() - paint_pane.getLayoutY(), mouse_end_pos.get_x_pos(), mouse_end_pos.get_y_pos() - paint_pane.getLayoutY());
+    }
+
+    private Circle makeCircle() {
+        //determine radius by the Pythagorean theorem
+        int radius = (int) Math.sqrt(Math.pow(Math.abs(mouse_start_pos.get_x_pos() - mouse_end_pos.get_x_pos()), 2) + Math.pow(Math.abs(mouse_start_pos.get_y_pos() - mouse_end_pos.get_y_pos()), 2)) / 2;
+
+        int x_difference = (int) (mouse_end_pos.get_x_pos() - mouse_start_pos.get_x_pos()) / 2;
+        int y_difference = (int) (mouse_end_pos.get_y_pos() - mouse_start_pos.get_y_pos()) / 2;
+
+        int center_x = (int) (mouse_start_pos.get_x_pos() + x_difference);
+        int center_y = (int) (mouse_start_pos.get_y_pos() + y_difference - bottom_pane.getHeight());
+
+/*        normalize the radius so the circle won't overflow from the top of the pane
+        but instead will be pushed down in the pain.*/
+
+        if ((center_y - radius) < bottom_pane.getHeight()) {
+            center_y += (radius - center_y);
+        }
+        radius = Math.abs(radius);
+        return new Circle(center_x, center_y, radius);
+    }
+
+    //populates the combo box with the shapes as String
+    private void populateShapeSelector(ComboBox<String> cb) {
+        cb.getItems().addAll("Rectangle", "Circle", "line");
+        //first value to be picked
+        cb.setValue("Rectangle");
+    }
+
+    //this function makes sure that shapes won't be drawn above the upper bounds
+    private void normalize_end_point(Point p) {
+
+        if (p.get_y_pos() < bottom_pane.getHeight()) p.set_y_pos(bottom_pane.getHeight());
+    }
 }
+
