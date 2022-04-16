@@ -1,0 +1,2 @@
+java PaintProgram
+pause

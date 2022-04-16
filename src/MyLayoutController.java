@@ -165,17 +165,19 @@ public class MyLayoutController {
         //determine radius by the Pythagorean theorem
         int radius = (int) Math.sqrt(Math.pow(Math.abs(mouse_start_pos.get_x_pos() - mouse_end_pos.get_x_pos()), 2) + Math.pow(Math.abs(mouse_start_pos.get_y_pos() - mouse_end_pos.get_y_pos()), 2)) / 2;
 
+        //get difference to easily calculate h
         int x_difference = (int) (mouse_end_pos.get_x_pos() - mouse_start_pos.get_x_pos()) / 2;
         int y_difference = (int) (mouse_end_pos.get_y_pos() - mouse_start_pos.get_y_pos()) / 2;
+
 
         int center_x = (int) (mouse_start_pos.get_x_pos() + x_difference);
         int center_y = (int) (mouse_start_pos.get_y_pos() + y_difference - bottom_pane.getHeight());
 
 /*        normalize the radius so the circle won't overflow from the top of the pane
         but instead will be pushed down in the pain.*/
-
+        System.out.println("y coor: " + center_y + ".  height : " + (int) bottom_pane.getHeight());
         if ((center_y - radius) < bottom_pane.getHeight()) {
-            center_y += (radius - center_y);
+            radius = (center_y);
         }
         radius = Math.abs(radius);
         return new Circle(center_x, center_y, radius);
